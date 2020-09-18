@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.IAreaDao">
+    <resultMap id="BaseResultMap" type="pojo.Area">
+        <id column="AREA_ID" jdbcType="VARCHAR" property="areaId" />
+        <result column="NAME" jdbcType="VARCHAR" property="name" />
+        <result column="VIR_HOUSE_LAT" jdbcType="VARCHAR" property="virHouseLat" />
+        <result column="VIR_HOUSE_LON" jdbcType="VARCHAR" property="virHouseLon" />
+        <result column="VIR_HOUSE_DIR" jdbcType="VARCHAR" property="virHouseDir" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        AREA_ID, NAME, VIR_HOUSE_LAT, VIR_HOUSE_LON, VIR_HOUSE_DIR
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from AREA
+        where AREA_ID = #{areaId,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.ICarModelDao" >
+    <resultMap id="BaseResultMap" type="pojo.CarModel" >
+        <id column="CAR_TYPE_ID" property="carTypeId" jdbcType="VARCHAR" />
+        <result column="NAME" property="name" jdbcType="VARCHAR" />
+        <result column="DEGREE" property="degree" jdbcType="VARCHAR" />
+        <result column="TON" property="ton" jdbcType="FLOAT" />
+        <result column="VOL" property="vol" jdbcType="FLOAT" />
+        <result column="RESTRICTED_AREA" property="restrictedArea" jdbcType="VARCHAR" />
+        <result column="GOODS_CLASS" property="goodsClass" jdbcType="VARCHAR" />
+        <result column="H_COST" property="hCost" jdbcType="VARCHAR" />
+        <result column="K_COST" property="kCost" jdbcType="VARCHAR" />
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+        <result column="STATE" property="state" jdbcType="VARCHAR" />
+        <result column="EDITOR" property="editor" jdbcType="VARCHAR" />
+        <result column="EDTIME" property="edtime" jdbcType="TIMESTAMP" />
+        <result column="LENGTH" property="length" jdbcType="DECIMAL" />
+        <result column="WIDETH" property="wideth" jdbcType="DECIMAL" />
+        <result column="HIGH" property="high" jdbcType="DECIMAL" />
+        <result column="NORMALTEMPERVOL" property="normaltempervol" jdbcType="DECIMAL" />
+        <result column="COLDSTORAGEVOL" property="coldstoragevol" jdbcType="DECIMAL" />
+        <result column="FROZENVOL" property="frozenvol" jdbcType="VARCHAR" />
+        <result column="DOWNLOADLIMIT" property="downloadlimit" jdbcType="DECIMAL" />
+        <result column="TOPLOADLIMIT" property="toploadlimit" jdbcType="DECIMAL" />
+        <result column="SENDPRIORITY" property="sendpriority" jdbcType="VARCHAR" />
+        <result column="COUNT" property="count" jdbcType="DECIMAL" />
+        <result column="ADD_TIME" property="addTime" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        CAR_TYPE_ID,   NAME, DEGREE, TON, VOL, RESTRICTED_AREA,  GOODS_CLASS, H_COST, K_COST,
+        REMARK, STATE, EDITOR, EDTIME, LENGTH, WIDETH, HIGH, NORMALTEMPERVOL, COLDSTORAGEVOL,
+        FROZENVOL, DOWNLOADLIMIT, TOPLOADLIMIT, SENDPRIORITY, COUNT,ADD_TIME
+    </sql>
+     
+    <select id="selectAllCarModel" resultMap="BaseResultMap">
+        select * from CAR_MODEL
+    </select>
+
+
+</mapper>
+
+
+
