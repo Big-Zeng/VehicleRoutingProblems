@@ -1,0 +1,35 @@
+X0_7_5 1.0
+Node: 0 goes to node: 7 by vehicle: 6
+X1_11_2 1.0
+Node: 1 goes to node: 11 by vehicle: 3
+X2_9_4 1.0
+Node: 2 goes to node: 9 by vehicle: 5
+X3_6_0 1.0
+Node: 3 goes to node: 6 by vehicle: 1
+X4_0_3 1.0
+Node: 4 goes to node: 0 by vehicle: 4
+X5_12_5 1.0
+Node: 5 goes to node: 12 by vehicle: 6
+X6_8_0 1.0
+Node: 6 goes to node: 8 by vehicle: 1
+X7_13_5 1.0
+Node: 7 goes to node: 13 by vehicle: 6
+X8_15_0 1.0
+Node: 8 goes to node: 15 by vehicle: 1
+X9_3_0 1.0
+Node: 9 goes to node: 3 by vehicle: 1
+X10_16_1 1.0
+Node: 10 goes to node: 16 by vehicle: 2
+X11_4_3 1.0
+Node: 11 goes to node: 4 by vehicle: 4
+X12_2_4 1.0
+Node: 12 goes to node: 2 by vehicle: 5
+X13_14_5 1.0
+Node: 13 goes to node: 14 by vehicle: 6
+X14_5_5 1.0
+Node: 14 goes to node: 5 by vehicle: 6
+X15_10_1 1.0
+Node: 15 goes to node: 10 by vehicle: 2
+X16_1_2 1.0
+Node: 16 goes to node: 1 by vehicle: 3
+The objective value is: 31133.963399999997

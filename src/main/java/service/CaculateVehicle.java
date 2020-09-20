@@ -13,8 +13,4 @@ public interface CaculateVehicle {
 
     List<Car> getCaculatedVehicle(List<OrderInformation> orderInformations, List<CarModel> carModels);
 
-
-
-
-
 }

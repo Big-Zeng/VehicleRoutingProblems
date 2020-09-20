@@ -7,8 +7,18 @@ public class Vehicle {
     private int Id;
     private double capacity;
     private double mCost; //per mile Cost
+    private int size;
 
-    public Vehicle(int id, double capacity, double mCost) {
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public Vehicle(int id, double capacity, double mCost, int size) {
+        this.size = size;
         Id = id;
         this.capacity = capacity;
         this.mCost = mCost;

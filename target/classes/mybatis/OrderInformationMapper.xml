@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.IOrderInformationDao" >
+    <resultMap id="BaseResultMap" type="pojo.OrderInformation" >
+        <id column="ID" property="id" jdbcType="DECIMAL" />
+        <result column="STORGE_NAME" property="storgeName" jdbcType="VARCHAR" />
+        <result column="ASSIGN_CAR_STATE" property="assignCarState" jdbcType="VARCHAR" />
+        <result column="CLIENT_NAME" property="clientName" jdbcType="VARCHAR" />
+        <result column="CONTECT" property="contect" jdbcType="VARCHAR" />
+        <result column="CONTCET_NUM" property="contcetNum" jdbcType="VARCHAR" />
+        <result column="LAT" property="lat" jdbcType="VARCHAR" />
+
+        <result column="AREA_ID" property="areaId" jdbcType="VARCHAR" />
+
+        <result column="VOL" property="vol" jdbcType="DECIMAL" />
+        <result column="NUM" property="num" jdbcType="DECIMAL" />
+        <result column="WEIGHT" property="weight" jdbcType="DECIMAL" />
+        <result column="MONEY" property="money" jdbcType="DECIMAL" />
+        <result column="CLIENT_ID" property="clientId" jdbcType="DECIMAL" />
+        <result column="LON" property="lon" jdbcType="VARCHAR" />
+        <result column="WAVE_ID" property="waveId" jdbcType="VARCHAR" />
+        <result column="TURNOVER_NUMBER" jdbcType="DECIMAL" property="turnoverNumber" />
+        <result column="TURNOVER_VOL" jdbcType="DECIMAL" property="turnoverVol" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="ASSIGN_CAR_TIME" jdbcType="TIMESTAMP" property="assignCarTime" />
+        <result column="ASSIGN_CAR_ID" jdbcType="VARCHAR" property="assignCarId" />
+        <result column="CHECK_STATE" jdbcType="CHAR" property="checkState"/>
+
+    </resultMap>
+    <sql id="Base_Column_List" >
+        ID, STORGE_NAME, ASSIGN_CAR_STATE, CLIENT_NAME, CONTECT, CONTCET_NUM, LAT, AREA_ID, VOL, NUM,
+        WEIGHT, MONEY, CLIENT_ID, LON, WAVE_ID, TURNOVER_NUMBER, TURNOVER_VOL,CREATE_TIME,ASSIGN_CAR_ID,ASSIGN_CAR_TIME,CHECK_STATE
+
+    </sql>
+
+    <select id="selectByAreaAndIsReexamine" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from ORDER_INFORMATION_T
+        where AREA_ID=#{areaId,jdbcType=VARCHAR}
+        AND CHECK_STATE = 'Y'
+
+    </select>
+
+    <select id="selectByAreaIdAndWaveId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from ORDER_INFORMATION_T
+        where AREA_ID=#{areaId,jdbcType=VARCHAR}
+        AND WAVE_ID=#{waveId,jdbcType=VARCHAR}
+        AND CHECK_STATE = 'Y'
+
+    </select>
+
+
+</mapper>

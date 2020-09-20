@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <settings>
+        <!-- 打印查询语句 -->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+    </settings>
+
+    <!-- 和Spring整合后environment配置都会被干掉 -->
+    <environments default="development">
+        <environment id="development">
+            <!-- 使用jdbc事务管理，目前由mybatis来管理 -->
+            <transactionManager type="JDBC" />
+            <!-- 数据库连接池，目前由mybatis来管理 -->
+            <dataSource type="POOLED"><!--有关于mysql数据库的各种信息-->
+                <property name="driver" value="oracle.jdbc.driver.OracleDriver" />
+                <property name="url" value="jdbc:oracle:thin:@125.221.225.135:1521:orcl" />
+                <property name="username" value="test" />
+                <property name="password" value="test22" />
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <!--将操作配置文件User.xml系添加进mapper-->
+        <mapper resource="mybatis/AreaMapper.xml" />
+        <mapper resource="mybatis/CarModelMapper.xml" />
+        <mapper resource="mybatis/OrderInformationMapper.xml" />
+    </mappers>
+</configuration>

@@ -16,5 +16,6 @@ public interface IOrderInformationDao {
      */
     List<OrderInformation> selectByAreaAndIsReexamine(String areaId);
 
+    List<OrderInformation> selectByAreaIdAndWaveId(@Param("areaId")String areaId, @Param("waveId")String waveId);
 
 }

@@ -8,7 +8,8 @@ package common;
 
 
 import org.slf4j.LoggerFactory;
-import pojo.OrderInformation;
+import pojo.*;
+import pojo.Client;
 import redis.clients.jedis.*;
 
 import java.util.*;
@@ -230,9 +231,30 @@ public class RedisClient {
 
 
         return dis;
+    }
 
 
+    public double[][] getPathByAreaAndOrders(ArrayList<Client> clients, String areaId) {
+        int length = clients.size();
+        double[][] dis = new double[length][length];
+        for (int i = 1; i < clients.size(); i++) {
+            for (int i1 = 1; i1 < clients.size(); i1++) {
+                String joinClient = clients.get(i).getClientId().toString() + "*" + clients.get(i1).getClientId().toString();
+                Integer value
+                        = Integer.valueOf(get(areaId, joinClient));
+                dis[i][i1] = value;
 
+            }
+        }
+        for (int i = 1; i < clients.size(); i++) {
+            String path1 = get(POINT_2_WAREHOUSE, B2B + "*" + clients.get(i).getClientId());
+            String path2 = get(POINT_2_WAREHOUSE, clients.get(i).getClientId() + "*" + B2B);
+            dis[0][i]
+                    = Double.valueOf(path1).intValue();
+            dis[i][0]
+                    = Double.valueOf(path2).intValue();
+        }
+        return dis;
     }
 
 

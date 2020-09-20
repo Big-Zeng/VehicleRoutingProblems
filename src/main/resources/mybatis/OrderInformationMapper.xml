@@ -40,4 +40,13 @@
 
     </select>
 
+    <select id="selectByAreaIdAndWaveId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from ORDER_INFORMATION_T
+        where AREA_ID=#{areaId,jdbcType=VARCHAR}
+        AND WAVE_ID=#{waveId,jdbcType=VARCHAR}
+        AND CHECK_STATE = 'Y'
+
+    </select>
+
+
 </mapper>

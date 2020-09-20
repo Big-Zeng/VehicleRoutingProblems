@@ -23,6 +23,8 @@ public class BasedCostVehiclePlanning implements CaculateVehicle {
         return null;
     }
 
+
+
     /**
      *
      * @param orderInformations

@@ -7,11 +7,28 @@ public class Client {
 
     private int Id;
 
+    private String clientId;
+
     private double demand;
 
     public Client(int id, double demand) {
         Id = id;
         this.demand = demand;
+    }
+
+
+    public Client(int id, String clientId, double demand) {
+        Id = id;
+        this.clientId = clientId;
+        this.demand = demand;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
     public int getId() {

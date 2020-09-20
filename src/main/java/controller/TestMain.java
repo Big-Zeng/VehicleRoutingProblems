@@ -1,17 +1,11 @@
 package controller;
 
-import com.graphhopper.jsprit.core.algorithm.VehicleRoutingAlgorithm;
-import com.graphhopper.jsprit.core.algorithm.box.Jsprit;
 import com.graphhopper.jsprit.core.problem.Location;
 import com.graphhopper.jsprit.core.problem.VehicleRoutingProblem;
-import com.graphhopper.jsprit.core.problem.cost.VehicleRoutingTransportCosts;
 import com.graphhopper.jsprit.core.problem.job.Service;
-import com.graphhopper.jsprit.core.problem.solution.VehicleRoutingProblemSolution;
 import com.graphhopper.jsprit.core.problem.vehicle.VehicleImpl;
 import com.graphhopper.jsprit.core.problem.vehicle.VehicleType;
 import com.graphhopper.jsprit.core.problem.vehicle.VehicleTypeImpl;
-import com.graphhopper.jsprit.core.reporting.SolutionPrinter;
-import com.graphhopper.jsprit.core.util.Solutions;
 import com.graphhopper.jsprit.core.util.VehicleRoutingTransportCostsMatrix;
 import common.MybatisSessionUtil;
 import common.RedisClient;
@@ -19,18 +13,19 @@ import dao.ICarModelDao;
 import dao.IOrderInformationDao;
 import org.apache.ibatis.session.SqlSession;
 import pojo.CarModel;
+import pojo.Client;
 import pojo.OrderInformation;
+import pojo.Vehicle;
+import service.GuriboVRP;
+import service.HVRPMainInterface;
 
-import java.math.BigDecimal;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Administrator on 2020/9/3.
  */
 public class TestMain {
-
-
     private static RedisClient redisClient = new RedisClient();
     public static final SqlSession session = MybatisSessionUtil.getSession();
 
@@ -38,24 +33,24 @@ public class TestMain {
         ICarModelDao iCarModelDao = session.getMapper(ICarModelDao.class);
         IOrderInformationDao iOrderInformationDao = session.getMapper(IOrderInformationDao.class);
         List<OrderInformation> orderInformations
-                = iOrderInformationDao.selectByAreaAndIsReexamine("430302");
+                = iOrderInformationDao.selectByAreaIdAndWaveId("430122","201702050034");
         List<CarModel> carModels
                 = iCarModelDao.selectAllCarModel();
 
+        cacluateHVRP(orderInformations, carModels);
+
      /*   CaculateVehicle caculateVehicle = new BasedCostVehiclePlanning();
         caculateVehicle.getCaculatedVehicle(orderInformations, carModels);*/
-
+/*
         int[][] dis = redisClient.getPathByAreaAndOrders(orderInformations);
 
         orderInformations.add(new OrderInformation(BigDecimal.valueOf(0.0), "27.902447", "113.003699", 0));
-
 
         VehicleRoutingProblem.Builder vrpBuilder = VehicleRoutingProblem.Builder.newInstance();
 
         setVRPClients(orderInformations, vrpBuilder);
         VehicleRoutingTransportCostsMatrix.Builder matrix = setDis(dis);
         VehicleRoutingTransportCosts costMatrix = matrix.build();
-
 
         setYuHuPaperVehicle(carModels, vrpBuilder, orderInformations.size() - 1);
         vrpBuilder.setFleetSize(VehicleRoutingProblem.FleetSize.FINITE);
@@ -66,8 +61,33 @@ public class TestMain {
 
         Collection<VehicleRoutingProblemSolution> solutions = vra.searchSolutions();
         VehicleRoutingProblemSolution best = Solutions.bestOf(solutions);
-        SolutionPrinter.print(vrp, best, SolutionPrinter.Print.VERBOSE);
+        SolutionPrinter.print(vrp, best, SolutionPrinter.Print.VERBOSE);*/
         //  new GraphStreamViewer(vrp, best).setRenderDelay(100).display();
+
+    }
+
+    public static void cacluateHVRP(List<OrderInformation> orderInformations, List<CarModel> carModels) {
+        ArrayList<Client> clients = new ArrayList<>();
+        clients.add(new Client(0, RedisClient.B2B, 0));
+
+        for (int i = 0; i < orderInformations.size(); i++) {
+            clients.add(new Client(i + 1, orderInformations.get(i).getClientId().toString(), orderInformations.get(i).getTurnoverVol()));
+        }
+
+        ArrayList<Vehicle> vehicles = new ArrayList<>();
+        for (int i = 0; i < carModels.size(); i++) {
+            vehicles.add(new Vehicle(i, carModels.get(i).getVol() * 1000, Double.valueOf(carModels.get(i).getkCost()), carModels.get(i).getCount()));
+        }
+
+        double[][] dis = redisClient.getPathByAreaAndOrders(clients, orderInformations.get(0).getAreaId());
+
+        HVRPMainInterface hvrpMainInterface = new GuriboVRP();
+        try {
+            hvrpMainInterface.HVRPSolution(clients,vehicles,dis);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 
