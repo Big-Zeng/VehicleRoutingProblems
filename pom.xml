@@ -15,7 +15,33 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
+
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <!--这部分可有可无,加上的话则直接生成可运行jar包-->
+                    <archive>
+                        <manifest>
+                            <mainClass>controller.TestMain</mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <!-- 在Class-Path下添加配置文件的路径 -->
+                            <Class-Path>lib/*.jar</Class-Path>
+                            <!--这里表示jar路径加入到MANIFEST.MF-->
+                        </manifestEntries>
+                    </archive>
+
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <descriptors>
+                        <descriptor>${basedir}/assembly/release.xml</descriptor>
+                    </descriptors>
+                </configuration>
+
+
             </plugin>
         </plugins>
     </build>
@@ -38,6 +64,25 @@
             <groupId>com.graphhopper</groupId>
             <artifactId>jsprit-analysis</artifactId>
             <version>1.9.0-beta.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.11</version>
+        </dependency>
+
+        <dependency>
+            <groupId>gurobi</groupId>
+            <artifactId>test</artifactId>
+            <version>903</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/lib/gurobi.jar</systemPath>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.graphhopper/jsprit-core -->

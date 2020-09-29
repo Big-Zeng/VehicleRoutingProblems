@@ -1,8 +1,15 @@
 package common;
 
+import pojo.CarModel;
+import pojo.Client;
+import pojo.OrderInformation;
+import pojo.Vehicle;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -130,7 +137,121 @@ public class CommonMethod {
         return var/n;
     }
 
+    /**
+     * 经纬度->换算米
+     * @param longitude1
+     * @param latitude1
+     * @param longitude2
+     * @param latitude2
+     * @return
+     */
+    public static double getDistance(double longitude1, double latitude1, double longitude2, double latitude2) {
 
+        double lat1 = (Math.PI / 180) * latitude1;
+        double lat2 = (Math.PI / 180) * latitude2;
+
+
+        double lon1 = (Math.PI / 180) * longitude1;
+        double lon2 = (Math.PI / 180) * longitude2;
+
+
+        double R = 6371;
+
+        double d = Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1)) * R;
+
+        return d * 1000;
+    }
+
+
+
+
+    /**
+     * 经纬度->平面坐标系
+     * @param lat
+     * @param lon
+     * @return
+     */
+    public static double[] MillierConvertion(double lat, double lon)
+    {
+        double L = 6381372 * Math.PI * 2;//地球周长
+        double W=L;// 平面展开后，x轴等于周长
+        double H=L/2;// y轴约等于周长一半
+        double mill=2.3;// 米勒投影中的一个常数，范围大约在正负2.3之间
+        double x = lon * Math.PI / 180;// 将经度从度数转换为弧度
+        double y = lat * Math.PI / 180;// 将纬度从度数转换为弧度
+        y=1.25 * Math.log( Math.tan( 0.25 * Math.PI + 0.4 * y ) );// 米勒投影的转换
+        // 弧度转为实际距离
+        x = ( W / 2 ) + ( W / (2 * Math.PI) ) * x;
+        y = ( H / 2 ) - ( H / ( 2 * mill ) ) * y;
+        double[] result=new double[2];
+        result[0]=x;
+        result[1]=y;
+        return result;
+    }
+    /**
+     * 获取客户间的距离
+     * @param clients
+     * @return
+     */
+    public static double[][] getClientDises(List<Client> clients) {
+        double[][] dis = new double[clients.size()][clients.size()];
+
+
+        for (int i = 0; i < clients.size(); i++) {
+            for (int i1 = 0; i1 < clients.size(); i1++) {
+                Client client1 = clients.get(i);
+                Client client2 = clients.get(i1);
+                dis[i][i1] = getDistance(client1.getX(), client1.getY(), client2.getX(), client2.getY());
+            }
+        }
+
+        return dis;
+    }
+
+
+
+    /**
+     * 获取唯一仓库点
+     * @return
+     */
+    public static Client getDeopt() {
+        return new Client(0, "depot", 0, 27.902447, 113.003699);
+
+    }
+
+    public static ArrayList<Vehicle> getVehicles(List<CarModel> carModels) {
+        ArrayList<Vehicle> vehicles = new ArrayList<>();
+        for (int i = 0; i < carModels.size(); i++) {
+            vehicles.add(new Vehicle(i, carModels.get(i).getVol() * 1000, Double.valueOf(carModels.get(i).getkCost()),
+                    carModels.get(i).getCount(),carModels.get(i).getCarTypeId()));
+        }
+        Collections.sort(vehicles);
+        return vehicles;
+    }
+
+    public static ArrayList<Client> getClients(List<OrderInformation> orderInformations) {
+        ArrayList<Client> clients = new ArrayList<>();
+        for (int i = 0; i < orderInformations.size(); i++) {
+            clients.add(new Client(i + 1, orderInformations.get(i).getClientId().toString(),
+                    orderInformations.get(i).getTurnoverVol(), Double.valueOf(orderInformations.get(i).getLat())
+                    , Double.valueOf(orderInformations.get(i).getLon())));
+        }
+        return clients;
+    }
+
+
+
+    public static double[][] getDis(List<Client> clients) {
+        double[][] dis = new double[clients.size()][clients.size()];
+        for (int i = 0; i < clients.size(); i++) {
+            for (int i1 = 0; i1 < clients.size(); i1++) {
+                double oneDis =  clients.get(i).getToDis(clients.get(i1));
+                dis[i][i1] = oneDis;
+                dis[i1][i] = oneDis;
+            }
+        }
+        return dis;
+    }
 
     /**
      * 传入一个数列x计算标准差

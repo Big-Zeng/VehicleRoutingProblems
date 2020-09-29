@@ -6,9 +6,12 @@ import dao.ICarModelDao;
 import dao.IOrderInformationDao;
 import org.apache.ibatis.session.SqlSession;
 import pojo.Area;
+import pojo.HVRPData;
 import pojo.OrderInformation;
-import service.VRPMain;
+import pojo.Vehicle;
+import service.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,22 +19,18 @@ import java.util.List;
  */
 public class HomeMain {
 
-    public static final SqlSession session = MybatisSessionUtil.getSession();
-
 
     public static void main(String[] args) {
+        ReadDataInterface readDataInterface = new TXTReadData();
+        HVRPData data = readDataInterface.readFile("F:\\论文文档\\成本分车\\Code\\vfmpv03.txt");
+        ArrayList<Vehicle> vehicleList = new ArrayList<>();
 
-
-        ICarModelDao iCarModelDao = session.getMapper(ICarModelDao.class);
-        IOrderInformationDao iOrderInformationDao = session.getMapper(IOrderInformationDao.class);
-        IAreaDao iAreaDao = session.getMapper(IAreaDao.class);
-
-        List<OrderInformation> orderInformations
-                = iOrderInformationDao.selectByAreaAndIsReexamine("430103");
-
-        Area area = iAreaDao.selectByPrimaryKey("430103");
-        VRPMain vrp = new VRPMain();
-
+        HVRPMainInterface hvrpMainInterface = new GuriboVRP();
+        try {
+            hvrpMainInterface.HVRPSolution(data.getClients(),data.getVehicles(), data.getDis());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
     }

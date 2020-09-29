@@ -1,9 +1,8 @@
 package service;
 
-import pojo.Car;
-import pojo.CarModel;
-import pojo.OrderInformation;
+import pojo.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,6 +10,13 @@ import java.util.List;
  */
 public interface CaculateVehicle {
 
-    List<Car> getCaculatedVehicle(List<OrderInformation> orderInformations, List<CarModel> carModels);
+
+    /**
+     *
+     * @param clients
+     * @param vehicles
+     * @return
+     */
+    List<Vehicle> getCaculatedVehicle(ArrayList<Client> clients, ArrayList<Vehicle> vehicles, Client subareaDepot, Client depot);
 
 }

@@ -13,4 +13,6 @@ public interface ICarModelDao {
 
     List<CarModel> selectAllCarModel();
 
+    List<CarModel> selectAllRemandCars();
+
 }

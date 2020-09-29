@@ -37,6 +37,12 @@
         select * from CAR_MODEL
     </select>
 
+    <select id="selectAllRemandCars" resultMap="BaseResultMap">
+        select CAR_TYPE_ID,K_COST,COUNT,VOL from CAR_MODEL where REMARK='1'
+
+
+    </select>
+
 
 </mapper>
 

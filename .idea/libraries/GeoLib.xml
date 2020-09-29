@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="GeoLib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../GeoLib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

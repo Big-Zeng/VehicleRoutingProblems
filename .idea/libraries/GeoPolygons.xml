@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="GeoPolygons">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../GeoPolygons.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

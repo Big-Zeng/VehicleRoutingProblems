@@ -49,4 +49,22 @@
     </select>
 
 
+    <update id="updateByAreaId" parameterType="java.lang.String"  >
+        update ORDER_INFORMATION_T set WAVE_ID = #{waveId,jdbcType=VARCHAR}
+
+          where AREA_ID=#{areaId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateRandomWaveId" >
+        update ORDER_INFORMATION_T set WAVE_ID = #{waveId,jdbcType=VARCHAR}
+          where
+        ID in
+        <foreach collection="Ids" item="id" index="index"
+                 open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+
+
+    </update>
+
 </mapper>

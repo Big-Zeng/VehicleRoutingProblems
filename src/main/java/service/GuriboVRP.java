@@ -4,12 +4,16 @@ import gurobi.*;
 import pojo.Client;
 import pojo.Vehicle;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 
 
 /**
  * Created by Administrator on 2020/9/18.
- * reference from Ç. Koç, T. Bektaş, O. Jabali, G. Laporte, Thirty years of heterogeneous vehicle routing, Eur. J. Oper. Res. 249 (2016) 1–21. https://doi.org/10.1016/j.ejor.2015.07.020.
+ * reference from Thirty years of heterogeneous vehicle routing
  */
 public class GuriboVRP implements HVRPMainInterface {
     public int nDepots;                         //number of depots
@@ -182,6 +186,15 @@ public class GuriboVRP implements HVRPMainInterface {
                     }//if
                 }//j
             }//i
+
+
+            for (int k = 0; k < this.vehicleList.size(); k++) {
+                for (int j = nDepots; j < this.allLocations.size(); j++) {
+                    expr.addTerm(this.vehicleList.get(k).getFixedCost(),x[0][j][k]);
+                }
+            }
+
+
             model.setObjective(expr, GRB.MINIMIZE);
 
             model.update();
@@ -193,6 +206,12 @@ public class GuriboVRP implements HVRPMainInterface {
 
             //5. CONSTRUCT SOLUTION ---------------------------------------------------------------------------------------------------------------------------------------------
             double obj = model.get(GRB.DoubleAttr.ObjVal);
+
+            System.out.println("The objective value is: " + obj);
+
+
+
+
 
             for (int i = 0; i < this.allLocations.size(); i++) {
                 for (int j = 0; j < this.allLocations.size(); j++) {
@@ -208,8 +227,6 @@ public class GuriboVRP implements HVRPMainInterface {
                 }//j
             }//i
 
-            System.out.println("The objective value is: " + obj);
-
 
             //6. DISPOSE OF MODEL AND ENVIRONMENT
             model.dispose();
@@ -221,100 +238,6 @@ public class GuriboVRP implements HVRPMainInterface {
     }
 
 
-   /* public void solution2() throws Exception {
-        try {
-            GRBEnv env = new GRBEnv();
-            env.set(GRB.IntParam.OutputFlag, 0);        //set to 1 to get constraint overview
-
-            GRBModel model = new GRBModel(env);
-            model.set(GRB.StringAttr.ModelName, "VRP");
-
-            GRBVar[][][] x = new GRBVar[this.allLocations.size()][this.allLocations.size()][this.vehicleList.size()];
-
-            for (int i = 0; i < this.allLocations.size(); i++) {
-                for (int j = 0; j < this.allLocations.size(); j++) {
-                    for (int k = 0; k < this.vehicleList.size(); k++) {
-                        if(i!=j)
-                            x[i][j][k] = model.addVar(0.0, 1.0, 0.0, GRB.BINARY, "X" + i + "_" + j + "_" + k);              //arc between node i and j used by vehicle k or not
-                    }//k
-                }//j
-            }//i
-
-            GRBVar[][] f = new GRBVar[this.allLocations.size()][this.allLocations.size()];
-            for (int i = 0; i < this.allLocations.size(); i++) {
-                for (int j = 0; j < this.allLocations.size(); j++) {
-                    if (i != j) {
-                        f[i][j] = model.addVar(0.0, GRB.INFINITY, 0.0, GRB.CONTINUOUS, "f" + i + "_" + j);
-                    }
-                }
-            }
-
-           //constraint 1
-            for (int j = nDepots; j < this.allLocations.size(); j++) {
-                GRBLinExpr constraint1 = new GRBLinExpr();
-                for (int k = 0; k < this.vehicleList.size(); k++) {
-                    for (int i = 0; i < this.allLocations.size(); i++) {
-                        constraint1.addTerm(1, x[i][j][k]);
-                    }
-                }
-                model.addConstr(constraint1, GRB.EQUAL, 1, "Constraint2_" + j);
-            }
-
-            //constraint 2
-
-            for (int p = nDepots; p < this.allLocations.size(); p++) {
-                for (int k = 0; k < this.vehicleList.size(); k++) {
-                    GRBLinExpr constraint2 = new GRBLinExpr();
-                    for (int i = 0; i < this.allLocations.size(); i++) {
-                        if(p!=i)
-                            constraint2.addTerm(1, x[i][p][k]);
-                    }
-                    for (int j = 0; j < this.allLocations.size(); j++) {
-                        //if (i != j) {
-                        if(p!=j)
-                            constraint2.addTerm(-1, x[p][j][k]);
-                        //}
-                    }
-                    model.addConstr(constraint2, GRB.EQUAL, 0, "Constraint1_" + p + "_" + k);
-                }
-            }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
-
-    }*/
-
-
-
     @Override
     public void HVRPSolution(ArrayList<Client> clients, ArrayList<Vehicle> vehicles, double[][] dis) throws Exception {
         this.vehicleList = vehicles;
@@ -324,4 +247,8 @@ public class GuriboVRP implements HVRPMainInterface {
         setQ();
         solution();
     }
+
+
+
+
 }
